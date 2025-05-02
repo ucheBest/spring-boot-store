@@ -19,8 +19,8 @@ public class UserDto {
     @JsonProperty("first_name")
     private String name;
     private String email;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String phoneNumber;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createdAt;
+//    @JsonInclude(JsonInclude.Include.NON_NULL)
+//    private String phoneNumber;
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//    private LocalDateTime createdAt;
 }
