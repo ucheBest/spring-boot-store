@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -30,6 +32,9 @@ public class Product {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @OneToMany(mappedBy = "product")
+    private Set<CartItem> cartItems = new HashSet<>();
 
     public void addCategory(Category category) {
         this.category = category;
