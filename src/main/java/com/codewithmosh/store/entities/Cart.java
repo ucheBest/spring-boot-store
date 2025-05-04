@@ -26,7 +26,8 @@ public class Cart {
     @Column(name = "date_created", nullable = false, updatable = false)
     private LocalDate dateCreated;
 
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private Set<CartItem> cartItems = new LinkedHashSet<>();
 
     @PrePersist
