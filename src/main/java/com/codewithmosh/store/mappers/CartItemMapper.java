@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 @Mapper(componentModel = "spring")
 public interface CartItemMapper {
-    @Mapping(source = "product.category.id", target = "product.categoryId")
+//    @Mapping(source = "product.category.id", target = "product.categoryId")
     @Mapping(target = "totalPrice", expression = "java(getTotalPrice(cartItem))")
     CartItemDto toDto(CartItem cartItem);
 

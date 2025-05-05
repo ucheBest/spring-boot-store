@@ -6,11 +6,12 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
 public class CartDto {
-    private String id;
+    private UUID id;
     private List<CartItemDto> items = new ArrayList<>();
-    private BigDecimal totalPrice;
+    private BigDecimal totalPrice = BigDecimal.ZERO;
 }

@@ -1,53 +1,52 @@
 package com.codewithmosh.store.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.math.BigDecimal;
 
 @Getter
-@NoArgsConstructor
+@Setter
 @Entity
 @Table(name = "cart_items")
+@AllArgsConstructor
+@NoArgsConstructor
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long id;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "cart", nullable = false)
-    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "cart_id")
     private Cart cart;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "product", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
 
-    @Setter
-    @NotNull
-    @Column(name = "quantity", nullable = false)
-    private Integer quantity = 0;
+    @Column(name = "quantity")
+
+    private Integer quantity = 1;
 
     public CartItem(Product product, Cart cart) {
-        addProduct(product);
-        addCart(cart);
-    }
-
-    public void addProduct(Product product) {
         this.product = product;
-        product.getCartItems().add(this);
-        this.incrementQuantity();
-    }
-
-    public void addCart(Cart cart) {
         this.cart = cart;
-        cart.getCartItems().add(this);
     }
 
     public void incrementQuantity() {
         this.quantity += 1;
-
     }
+
+    public void decrementQuantity() {
+        this.quantity -= 1;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return product.getPrice().multiply(new BigDecimal(quantity));
+    }
+
 }
