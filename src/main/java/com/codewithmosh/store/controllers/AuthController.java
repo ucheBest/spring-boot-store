@@ -1,12 +1,15 @@
 package com.codewithmosh.store.controllers;
 
 import com.codewithmosh.store.UserModel;
+import com.codewithmosh.store.config.JwtConfig;
 import com.codewithmosh.store.dtos.JwtResponse;
 import com.codewithmosh.store.dtos.LoginUserRequest;
 import com.codewithmosh.store.dtos.UserDto;
 import com.codewithmosh.store.mappers.UserMapper;
 import com.codewithmosh.store.repositories.UserRepository;
 import com.codewithmosh.store.services.JwtService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +18,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,10 +29,12 @@ public class AuthController {
     private final JwtService jwtService;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final JwtConfig jwtConfig;
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> loginUser(
-        @Valid @RequestBody LoginUserRequest request
+        @Valid @RequestBody LoginUserRequest request,
+        HttpServletResponse response
     ) {
         var authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
@@ -36,17 +42,33 @@ public class AuthController {
                 request.getPassword()
             )
         );
-        var user = (UserModel) authentication.getPrincipal();
-        String token = jwtService.generateToken(user);
-        return ResponseEntity.ok(JwtResponse.builder().token(token).build());
+        var userDetails = (User) authentication.getPrincipal();
+        var user = userRepository.findById(Long.parseLong(userDetails.getUsername())).orElseThrow();
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
+
+        var cookie = new Cookie("refreshToken", refreshToken);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/auth/refresh");
+        cookie.setMaxAge(jwtConfig.getRefreshTokenExpiration());
+        cookie.setSecure(true);
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok(JwtResponse.builder().token(accessToken).build());
     }
 
-    @PostMapping("/validate")
-    public boolean validate(@RequestHeader("Authorization") String authHeader) {
-        System.out.println("Validate called");
-        var token = authHeader.replace("Bearer ", "");
-        return jwtService.validateToken(token);
+    @GetMapping("/refresh")
+    public ResponseEntity<JwtResponse> refreshToken(
+        @CookieValue(name = "refreshToken") String token
+    ) {
+        if (!jwtService.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        var userId = jwtService.getUserIdFromToken(token);
+        var user = userRepository.findById(userId).orElseThrow();
+        var accessToken = jwtService.generateAccessToken(user);
 
+        return ResponseEntity.ok(JwtResponse.builder().token(accessToken).build());
     }
 
     @GetMapping("/me")
