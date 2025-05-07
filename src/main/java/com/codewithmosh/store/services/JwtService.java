@@ -1,5 +1,6 @@
 package com.codewithmosh.store.services;
 
+import com.codewithmosh.store.UserModel;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -17,9 +18,11 @@ public class JwtService {
     @Value("${spring.jwt.secret}")
     private String secret;
 
-    public String generateToken(String email) {
+    public String generateToken(UserModel user) {
         return Jwts.builder()
-            .subject(email)
+            .subject(user.getUserId())
+            .claim("name", user.getNameOfUser())
+            .claim("email", user.getEmail())
             .issuedAt(new Date())
             .expiration(new Date(System.currentTimeMillis() + 1000 * tokenExpirationInMilliSeconds))
             .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
@@ -43,8 +46,7 @@ public class JwtService {
             .getPayload();
     }
 
-    public String getEmailFromToken(String token) {
-        return getUserClaims(token).getSubject();
+    public Long getUserIdFromToken(String token) {
+        return Long.valueOf(getUserClaims(token).getSubject());
     }
-
 }

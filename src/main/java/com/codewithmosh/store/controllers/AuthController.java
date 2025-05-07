@@ -1,5 +1,6 @@
 package com.codewithmosh.store.controllers;
 
+import com.codewithmosh.store.UserModel;
 import com.codewithmosh.store.dtos.JwtResponse;
 import com.codewithmosh.store.dtos.LoginUserRequest;
 import com.codewithmosh.store.dtos.UserDto;
@@ -29,13 +30,14 @@ public class AuthController {
     public ResponseEntity<JwtResponse> loginUser(
         @Valid @RequestBody LoginUserRequest request
     ) {
-        authenticationManager.authenticate(
+        var authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                 request.getEmail(),
                 request.getPassword()
             )
         );
-        String token = jwtService.generateToken(request.getEmail());
+        var user = (UserModel) authentication.getPrincipal();
+        String token = jwtService.generateToken(user);
         return ResponseEntity.ok(JwtResponse.builder().token(token).build());
     }
 
@@ -50,9 +52,9 @@ public class AuthController {
     @GetMapping("/me")
     public ResponseEntity<UserDto> me() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
-        var email = (String) authentication.getPrincipal();
+        var userId = (Long) authentication.getPrincipal();
 
-        var user = userRepository.findByEmail(email).orElse(null);
+        var user = userRepository.findById(userId).orElse(null);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
