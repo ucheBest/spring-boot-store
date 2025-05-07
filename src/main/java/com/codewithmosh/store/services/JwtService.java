@@ -1,6 +1,5 @@
 package com.codewithmosh.store.services;
 
-import com.codewithmosh.store.UserModel;
 import com.codewithmosh.store.config.JwtConfig;
 import com.codewithmosh.store.entities.User;
 import io.jsonwebtoken.Claims;
@@ -10,7 +9,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -18,31 +16,33 @@ public class JwtService {
 
     private final JwtConfig jwtConfig;
 
-    public String generateAccessToken(User user) {
+    public Jwt generateAccessToken(User user) {
         return generateToken(user, jwtConfig.getAccessTokenExpiration());
     }
 
-    public String generateRefreshToken(User user) {
+    public Jwt generateRefreshToken(User user) {
         return generateToken(user, jwtConfig.getRefreshTokenExpiration());
     }
 
-    public String generateToken(User user, long tokenExpiration) {
-        return Jwts.builder()
+    public Jwt generateToken(User user, long tokenExpiration) {
+        var claims = Jwts.claims()
             .subject(String.valueOf(user.getId()))
-            .claim("name", user.getName())
-            .claim("email", user.getEmail())
+            .add("name", user.getName())
+            .add("email", user.getEmail())
+            .add("role", user.getRole())
             .issuedAt(new Date())
             .expiration(new Date(System.currentTimeMillis() + 1000 * tokenExpiration))
-            .signWith(jwtConfig.getSecretKey())
-            .compact();
+            .build();
+
+        return new Jwt(claims, jwtConfig.getSecretKey());
     }
 
-    public boolean validateToken(String token) {
+    public Jwt parseToken(String token) {
         try {
             var claims = getUserClaims(token);
-            return claims.getExpiration().after(new Date());
+            return new Jwt(claims, jwtConfig.getSecretKey());
         } catch (JwtException e) {
-            return false;
+            return null;
         }
     }
 
@@ -52,9 +52,5 @@ public class JwtService {
             .build()
             .parseSignedClaims(token)
             .getPayload();
-    }
-
-    public Long getUserIdFromToken(String token) {
-        return Long.valueOf(getUserClaims(token).getSubject());
     }
 }
