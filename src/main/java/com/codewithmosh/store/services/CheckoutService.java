@@ -6,6 +6,7 @@ import com.codewithmosh.store.dtos.CheckoutResponse;
 import com.codewithmosh.store.entities.Order;
 import com.codewithmosh.store.exceptions.CartIsEmptyException;
 import com.codewithmosh.store.exceptions.CartNotFoundException;
+import com.codewithmosh.store.exceptions.OrderNotFoundException;
 import com.codewithmosh.store.exceptions.PaymentException;
 import com.codewithmosh.store.repositories.CartRepository;
 import lombok.RequiredArgsConstructor;
@@ -47,5 +48,15 @@ public class CheckoutService {
             orderRepository.delete(order);
             throw e;
         }
+    }
+
+    public void handleWebhookEvent(WebhookRequest request) {
+        var paymentResult = paymentGateway.parseWebhookRequest(request)
+            .orElseThrow(() -> new PaymentException("Invalid webhook event"));
+
+        var order = orderRepository.findById(paymentResult.orderId())
+            .orElseThrow(OrderNotFoundException::new);
+        order.updateStatus(paymentResult.paymentStatus());
+        orderRepository.save(order);
     }
 }

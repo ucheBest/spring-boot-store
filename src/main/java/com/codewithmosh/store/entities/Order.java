@@ -27,7 +27,7 @@ public class Order {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private PaymentStatus status;
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -43,7 +43,7 @@ public class Order {
     public static Order fromCart(Cart cart, User customer) {
         var order = Order.builder()
             .customer(customer)
-            .status(OrderStatus.PENDING)
+            .status(PaymentStatus.PENDING)
             .totalPrice(cart.getTotalPrice())
             .build();
 
@@ -70,6 +70,10 @@ public class Order {
 
     public boolean isPlacedBy(User customer) {
         return this.customer.equals(customer);
+    }
+
+    public void updateStatus(PaymentStatus status) {
+        this.status = status;
     }
 
 }

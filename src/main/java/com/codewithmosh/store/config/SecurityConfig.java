@@ -66,6 +66,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/auth/refresh").permitAll()
+                .requestMatchers(HttpMethod.POST, "/checkout/webhook").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(
