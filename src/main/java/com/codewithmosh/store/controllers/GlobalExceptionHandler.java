@@ -3,7 +3,7 @@ package com.codewithmosh.store.controllers;
 import com.codewithmosh.store.dtos.ErrorDto;
 import com.codewithmosh.store.carts.CartIsEmptyException;
 import com.codewithmosh.store.carts.CartNotFoundException;
-import com.codewithmosh.store.exceptions.OrderNotFoundException;
+import com.codewithmosh.store.orders.OrderNotFoundException;
 import com.codewithmosh.store.users.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

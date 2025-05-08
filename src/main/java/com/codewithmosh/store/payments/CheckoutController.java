@@ -1,8 +1,6 @@
 package com.codewithmosh.store.payments;
 
-import com.codewithmosh.store.repositories.OrderRepository;
-import com.codewithmosh.store.dtos.CheckoutRequest;
-import com.codewithmosh.store.dtos.CheckoutResponse;
+import com.codewithmosh.store.orders.OrderRepository;
 import com.codewithmosh.store.dtos.ErrorDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

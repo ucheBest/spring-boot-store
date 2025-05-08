@@ -1,6 +1,5 @@
 package com.codewithmosh.store.auth;
 
-import com.codewithmosh.store.dtos.LoginUserRequest;
 import com.codewithmosh.store.users.UserDto;
 import com.codewithmosh.store.users.UserMapper;
 import com.codewithmosh.store.users.UserRepository;

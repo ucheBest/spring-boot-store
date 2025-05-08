@@ -1,5 +1,6 @@
 package com.codewithmosh.store.users;
 
+import com.codewithmosh.store.auth.ChangePasswordRequest;
 import com.codewithmosh.store.dtos.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

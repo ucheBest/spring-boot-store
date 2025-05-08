@@ -1,4 +1,4 @@
-package com.codewithmosh.store.dtos;
+package com.codewithmosh.store.orders;
 
 import lombok.Builder;
 import lombok.Getter;
