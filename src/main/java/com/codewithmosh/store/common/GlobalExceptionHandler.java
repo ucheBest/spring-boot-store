@@ -1,6 +1,5 @@
-package com.codewithmosh.store.controllers;
+package com.codewithmosh.store.common;
 
-import com.codewithmosh.store.dtos.ErrorDto;
 import com.codewithmosh.store.carts.CartIsEmptyException;
 import com.codewithmosh.store.carts.CartNotFoundException;
 import com.codewithmosh.store.orders.OrderNotFoundException;

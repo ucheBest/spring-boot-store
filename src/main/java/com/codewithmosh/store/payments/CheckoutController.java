@@ -1,7 +1,7 @@
 package com.codewithmosh.store.payments;
 
 import com.codewithmosh.store.orders.OrderRepository;
-import com.codewithmosh.store.dtos.ErrorDto;
+import com.codewithmosh.store.common.ErrorDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
