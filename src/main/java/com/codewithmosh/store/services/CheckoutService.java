@@ -20,10 +20,9 @@ public class CheckoutService {
     private final OrderMapper orderMapper;
 
     public CheckoutResponse checkout(CheckoutRequest request) {
-        var cart = cartRepository.getCartWithItems(request.getCartId()).orElse(null);
-        if (cart == null) {
-            throw new CartNotFoundException();
-        }
+        var cart = cartRepository.getCartWithItems(request.getCartId())
+            .orElseThrow(CartNotFoundException::new);
+
         if (cart.isEmpty()) {
             throw new CartIsEmptyException();
         }

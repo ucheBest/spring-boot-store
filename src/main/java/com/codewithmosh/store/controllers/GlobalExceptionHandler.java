@@ -3,6 +3,7 @@ package com.codewithmosh.store.controllers;
 import com.codewithmosh.store.dtos.ErrorDto;
 import com.codewithmosh.store.exceptions.CartIsEmptyException;
 import com.codewithmosh.store.exceptions.CartNotFoundException;
+import com.codewithmosh.store.exceptions.OrderNotFoundException;
 import com.codewithmosh.store.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
         CartIsEmptyException.class,
         CartNotFoundException.class,
-        UserNotFoundException.class
+        UserNotFoundException.class,
+        OrderNotFoundException.class
     })
     public ResponseEntity<ErrorDto> handleNotFoundExceptions(Exception ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)

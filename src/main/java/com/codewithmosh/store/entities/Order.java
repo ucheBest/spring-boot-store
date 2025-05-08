@@ -68,4 +68,8 @@ public class Order {
             .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    public boolean isPlacedBy(User customer) {
+        return this.customer.equals(customer);
+    }
+
 }
