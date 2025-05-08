@@ -1,7 +1,6 @@
 package com.codewithmosh.store.products;
 
-import com.codewithmosh.store.entities.CartItem;
-import com.codewithmosh.store.entities.Category;
+import com.codewithmosh.store.carts.CartItem;
 import com.codewithmosh.store.entities.OrderItem;
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,4 +1,4 @@
-package com.codewithmosh.store.exceptions;
+package com.codewithmosh.store.carts;
 
 public class CartIsEmptyException extends RuntimeException {
     public CartIsEmptyException() {
