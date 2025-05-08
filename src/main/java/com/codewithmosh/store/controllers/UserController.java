@@ -30,15 +30,15 @@ public class UserController {
 
     @GetMapping
     public List<UserDto> getAllUsers(
-            @RequestParam(required = false, defaultValue = "", name = "sort") String sortBy
+        @RequestParam(required = false, defaultValue = "", name = "sort") String sortBy
     ) {
         if (!Set.of("name", "email").contains(sortBy)) {
             sortBy = "name";
         }
         return userRepository.findAll(Sort.by(sortBy))
-                .stream()
-                .map(userMapper::toDto)
-                .toList();
+            .stream()
+            .map(userMapper::toDto)
+            .toList();
     }
 
     @GetMapping("/{id}")
@@ -52,12 +52,12 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<?> registerUser(
-            @Valid @RequestBody RegisterUserRequest request,
-            UriComponentsBuilder uriBuilder
+        @Valid @RequestBody RegisterUserRequest request,
+        UriComponentsBuilder uriBuilder
     ) {
         if (userRepository.existsByEmail(request.getEmail())) {
             return ResponseEntity.badRequest().body(
-                    Map.of("email", "Email is already registered")
+                new ErrorDto("Email is already registered")
             );
         }
 
@@ -72,8 +72,8 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> updateUser(
-            @PathVariable Long id,
-            @RequestBody UpdateUserRequest request
+        @PathVariable Long id,
+        @RequestBody UpdateUserRequest request
     ) {
         var user = userRepository.findById(id).orElse(null);
         if (user == null) {
@@ -98,8 +98,8 @@ public class UserController {
 
     @PostMapping("/{id}/change-password")
     public ResponseEntity<Void> changePassword(
-            @PathVariable Long id,
-            @RequestBody ChangePasswordRequest request
+        @PathVariable Long id,
+        @RequestBody ChangePasswordRequest request
     ) {
         var user = userRepository.findById(id).orElse(null);
         if (user == null) {

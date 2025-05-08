@@ -33,8 +33,11 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
     private Set<CartItem> cartItems = new HashSet<>();
+
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
+    private Set<OrderItem> orderItems = new HashSet<>();
 
     public void addCategory(Category category) {
         this.category = category;
