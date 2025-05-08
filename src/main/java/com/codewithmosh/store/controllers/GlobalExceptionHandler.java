@@ -4,7 +4,7 @@ import com.codewithmosh.store.dtos.ErrorDto;
 import com.codewithmosh.store.exceptions.CartIsEmptyException;
 import com.codewithmosh.store.exceptions.CartNotFoundException;
 import com.codewithmosh.store.exceptions.OrderNotFoundException;
-import com.codewithmosh.store.exceptions.UserNotFoundException;
+import com.codewithmosh.store.users.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
