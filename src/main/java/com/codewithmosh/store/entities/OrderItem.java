@@ -1,7 +1,7 @@
 package com.codewithmosh.store.entities;
 
+import com.codewithmosh.store.products.Product;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.math.BigDecimal;

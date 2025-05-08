@@ -1,6 +1,6 @@
 package com.codewithmosh.store.payments;
 
-import com.codewithmosh.store.controllers.OrderRepository;
+import com.codewithmosh.store.repositories.OrderRepository;
 import com.codewithmosh.store.dtos.CheckoutRequest;
 import com.codewithmosh.store.dtos.CheckoutResponse;
 import com.codewithmosh.store.entities.Order;
