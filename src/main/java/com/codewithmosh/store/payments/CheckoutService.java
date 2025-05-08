@@ -8,7 +8,7 @@ import com.codewithmosh.store.exceptions.CartIsEmptyException;
 import com.codewithmosh.store.exceptions.CartNotFoundException;
 import com.codewithmosh.store.exceptions.OrderNotFoundException;
 import com.codewithmosh.store.repositories.CartRepository;
-import com.codewithmosh.store.services.AuthService;
+import com.codewithmosh.store.auth.AuthService;
 import com.codewithmosh.store.services.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

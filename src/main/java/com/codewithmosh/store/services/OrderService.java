@@ -1,5 +1,6 @@
 package com.codewithmosh.store.services;
 
+import com.codewithmosh.store.auth.AuthService;
 import com.codewithmosh.store.controllers.OrderRepository;
 import com.codewithmosh.store.dtos.OrderDto;
 import com.codewithmosh.store.exceptions.OrderNotFoundException;
