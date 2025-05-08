@@ -35,4 +35,8 @@ public class OrderItem {
     @Column(name = "total_price")
     private BigDecimal totalPrice;
 
+    public BigDecimal getTotalPrice() {
+        return unitPrice.multiply(new BigDecimal(quantity));
+    }
+
 }

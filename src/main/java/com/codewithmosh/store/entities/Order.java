@@ -62,4 +62,10 @@ public class Order {
         return order;
     }
 
+    public BigDecimal getTotalPrice() {
+        return this.orderItems.stream()
+            .map(OrderItem::getTotalPrice)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
 }

@@ -6,7 +6,6 @@ import com.codewithmosh.store.dtos.CheckoutResponse;
 import com.codewithmosh.store.entities.Order;
 import com.codewithmosh.store.exceptions.CartIsEmptyException;
 import com.codewithmosh.store.exceptions.CartNotFoundException;
-import com.codewithmosh.store.exceptions.UserNotFoundException;
 import com.codewithmosh.store.mappers.OrderMapper;
 import com.codewithmosh.store.repositories.CartRepository;
 import lombok.AllArgsConstructor;
@@ -30,9 +29,6 @@ public class CheckoutService {
         }
 
         var user = authService.getCurrentUser();
-        if (user == null) {
-            throw new UserNotFoundException();
-        }
 
         var order = Order.fromCart(cart, user);
 
@@ -41,7 +37,7 @@ public class CheckoutService {
         cart.removeAllItems();
         cartRepository.save(cart);
 
-        return orderMapper.toDto(savedOrder);
+        return orderMapper.toCheckoutDto(savedOrder);
     }
 
 }

@@ -3,6 +3,7 @@ package com.codewithmosh.store.controllers;
 import com.codewithmosh.store.dtos.ErrorDto;
 import com.codewithmosh.store.exceptions.CartIsEmptyException;
 import com.codewithmosh.store.exceptions.CartNotFoundException;
+import com.codewithmosh.store.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -32,8 +33,12 @@ public class GlobalExceptionHandler {
             new ErrorDto("Invalid request body"));
     }
 
-    @ExceptionHandler({CartIsEmptyException.class, CartNotFoundException.class})
-    public ResponseEntity<ErrorDto> handlerCartExceptions(Exception ex) {
+    @ExceptionHandler({
+        CartIsEmptyException.class,
+        CartNotFoundException.class,
+        UserNotFoundException.class
+    })
+    public ResponseEntity<ErrorDto> handleNotFoundExceptions(Exception ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body(new ErrorDto(ex.getMessage()));
     }
