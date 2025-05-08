@@ -80,12 +80,6 @@ public class CartController {
         return ResponseEntity.noContent().build();
     }
 
-    @ExceptionHandler(CartNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handlerCartNotFound() {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Map.of("cart", "Cart not found"));
-    }
-
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<Map<String, String>> handlerProductNotFound() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)

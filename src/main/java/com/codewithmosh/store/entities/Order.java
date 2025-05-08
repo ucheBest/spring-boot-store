@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Builder
@@ -38,9 +39,27 @@ public class Order {
     @Builder.Default
     private Set<OrderItem> orderItems = new LinkedHashSet<>();
 
-    public void addItems(Set<OrderItem> orderItems) {
-        this.orderItems.addAll(orderItems);
-    }
 
+    public static Order fromCart(Cart cart, User customer) {
+        var order = Order.builder()
+            .customer(customer)
+            .status(OrderStatus.PENDING)
+            .totalPrice(cart.getTotalPrice())
+            .build();
+
+        Set<OrderItem> orderItems = cart.getCartItems().stream()
+            .map(item -> OrderItem.builder()
+                .order(order)
+                .product(item.getProduct())
+                .unitPrice(item.getProduct().getPrice())
+                .quantity(item.getQuantity())
+                .totalPrice(item.getTotalPrice())
+                .build())
+            .collect(Collectors.toUnmodifiableSet());
+
+        order.orderItems.addAll(orderItems);
+
+        return order;
+    }
 
 }

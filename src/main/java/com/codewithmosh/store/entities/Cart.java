@@ -23,20 +23,20 @@ public class Cart {
     @Column(name = "date_created", insertable = false, updatable = false)
     private LocalDate dateCreated;
 
-    @OneToMany(mappedBy = "cart", cascade ={CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "cart", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<CartItem> cartItems = new LinkedHashSet<>();
 
     public BigDecimal getTotalPrice() {
         return cartItems.stream()
-                .map(CartItem::getTotalPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+            .map(CartItem::getTotalPrice)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public CartItem getItem(Long productId) {
         return this.cartItems.stream()
-                .filter(item -> item.getProduct().getId().equals(productId))
-                .findFirst()
-                .orElse(null);
+            .filter(item -> item.getProduct().getId().equals(productId))
+            .findFirst()
+            .orElse(null);
     }
 
     public CartItem addItem(Product product) {
@@ -63,5 +63,9 @@ public class Cart {
 
     public void removeAllItems() {
         this.cartItems.clear();
+    }
+
+    public boolean isEmpty() {
+        return cartItems.isEmpty();
     }
 }
