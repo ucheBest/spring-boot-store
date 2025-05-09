@@ -1,8 +1,10 @@
 package com.codewithmosh.store.common;
 
+import com.codewithmosh.store.auth.UnAuthorisedException;
 import com.codewithmosh.store.carts.CartIsEmptyException;
 import com.codewithmosh.store.carts.CartNotFoundException;
 import com.codewithmosh.store.orders.OrderNotFoundException;
+import com.codewithmosh.store.users.BadUserRequestException;
 import com.codewithmosh.store.users.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,5 +44,19 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDto> handleNotFoundExceptions(Exception ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body(new ErrorDto(ex.getMessage()));
+    }
+
+    @ExceptionHandler(UnAuthorisedException.class)
+    public ResponseEntity<ErrorDto> handleUnauthorisedMessage(Exception ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+            new ErrorDto(ex.getMessage())
+        );
+    }
+
+    @ExceptionHandler(BadUserRequestException.class)
+    public ResponseEntity<ErrorDto> handleBadRequestMessage(Exception ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+            new ErrorDto(ex.getMessage())
+        );
     }
 }
